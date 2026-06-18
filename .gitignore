@@ -1,9 +1,0 @@
-# Project exclude paths
-.idea/
-!.idea/icon.*
-!.idea/fileTemplates/
-!.idea/fileTemplates/**
-**/run/
-**/.gradle/
-**/build/
-*/src/main/generated/
