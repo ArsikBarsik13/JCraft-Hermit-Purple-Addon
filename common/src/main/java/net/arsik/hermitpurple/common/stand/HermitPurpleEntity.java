@@ -39,30 +39,34 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
     public static final SimpleAttack<HermitPurpleEntity> VINE_WHIP_FOLLOWUP = new SimpleAttack<HermitPurpleEntity>(
             0, 5,7, 2.2f, 0.9f, 20, 1.0f, 0.1f, 0.1f)
             .withImpactSound(JSoundRegistry.IMPACT_2)
+            .withExtraHitBox(-0.65, 0.0f, 1.2f)
+            .withExtraHitBox(0.75, 0.0f, 1.1f)
             .withInfo(
                     Component.literal("Second hit Vine Whip"),
                     Component.empty()
-            );
-    //todo: make closer hits so the enemy can't hide in front of you
+            ); //todo: make a cris-cross pattern here
     public static final SimpleAttack<HermitPurpleEntity> VINE_WHIP = new SimpleAttack<HermitPurpleEntity>(
-            2, 6, 8, 2.0f, 0.8f, 20, 0.95f, 0.3f, 0.1f)
+            30, 6, 8, 2.0f, 0.8f, 20, 0.95f, 0.3f, 0.0f)
             .withImpactSound(JSoundRegistry.IMPACT_1)
             .withFollowup(VINE_WHIP_FOLLOWUP)
+            .withExtraHitBox(-0.6, 0.0f, 1.2f)
+            .withExtraHitBox(0.7, 0.0f, 1.1f)
             .withInfo(
                     Component.literal("Vine Whip"),
-                    Component.literal("Semi-quick combo starter/extender, goes in a series of two with a criss-cross pattern")
+                    Component.literal("Semi-quick combo starter/extender, follows up in a cris-cross pattern")
             );
     public static final MainBarrageAttack<HermitPurpleEntity> HAMON_CHARGE = new MainBarrageAttack<HermitPurpleEntity>(280,
-            0, 40, 0.75f, 1f, 30, 2f, 0.25f, 0f, 3, Blocks.OBSIDIAN.defaultDestroyTime())
+            0, 40, 0.75f, 1f, 30, 2f, 0.25f, 0.0f, 3, Blocks.OBSIDIAN.defaultDestroyTime())
             .withSound(JSoundRegistry.HAMON_SURGE)
             .withInfo(
                     Component.literal("§eHamon Empower (HAMON SPEC-ONLY)§f"),
                     Component.literal("§eEmpower your attacks with Hamon energy§f")
             ); //is an SP barrage atm
     public static final KnockdownAttack<HermitPurpleEntity> HP_KNOCKDOWN = new KnockdownAttack<HermitPurpleEntity>(
-            0, 4, 6, 1.35f, 1.1f, 25, 1.3f, 0.4f, 0, 6)
+            0, 4, 6, 1.35f, 1.1f, 25, 1.3f, 0.4f, 0.0f, 6)
             .withImpactSound(JSoundRegistry.HAMON_CRACKLES) //needs the right sound
             .withHitSpark(JParticleType.HIT_SPARK_1)
+            .withExtraHitBox(0.1, 0.0f, 1.2f)
             .withLaunch()
             .withInfo(
                     Component.literal("Hermit Barrage(Finisher)"),
@@ -73,42 +77,40 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
             .withFinisher(20, HP_KNOCKDOWN)
             .withCrouchingVariant(HAMON_CHARGE)
             .withSound(JSoundRegistry.D4C_LIGHT)
+            .withExtraHitBox(0.07, 0.0f, 1.0f)
             .withInfo(
                     Component.literal("Hermit Barrage"),
                     Component.literal("Hermit Purple does A 3 Hit Combo, last hit knocks down")
             );
     public static final SimpleUppercutAttack<HermitPurpleEntity> UPWARD_LAUNCH = new SimpleUppercutAttack<HermitPurpleEntity>(
-            7, 12, 20, 1.75f, 1.2f, 32, 1.5f, 1.1f, 0.1f, 0.2f)
+            7, 12, 20, 1.75f, 1.2f, 32, 1.5f, 0.3f, 0.0f, 0.4f)
             .withSound(JSoundRegistry.D4C_LIGHT)
             .withImpactSound(JSoundRegistry.IMPACT_1)
             .withHitSpark(JParticleType.HIT_SPARK_3)
+            .withExtraHitBox(0.5, 0.0f, 1.2f)
+            .withExtraHitBox(-0.4, 0.0f, 0.9f)
             .withLaunch()
             .withInfo(
                     Component.literal("Upward Launch"),
                     Component.literal("Hermit Purple launches the enemy upwards and stuns them")
             );
     public static final KnockdownAttack<HermitPurpleEntity> SLAM = new KnockdownAttack<HermitPurpleEntity>(
-            8, 12, 24, 1.75f, 1.2f, 30, 1.5f, 1.1f, 0.1f, 5)
+            8, 12, 24, 1.75f, 1.2f, 30, 1.5f, 1.1f, 0.0f, 10)
             .withSound(JSoundRegistry.D4C_LIGHT)
             .withCrouchingVariant(UPWARD_LAUNCH)
             .withImpactSound(JSoundRegistry.IMPACT_1)
             .withHitSpark(JParticleType.HIT_SPARK_3)
+            .withExtraHitBox(0.5, 0.0f, 1.2f)
+            .withExtraHitBox(-0.4, 0.0f, 0.9f)
             .withInfo(
                     Component.literal("Slam"),
                     Component.literal("Hermit Purple swings its branch downwards")
             );
-    //todo: make a closer hit
-    public static final SimpleAttack<HermitPurpleEntity> HP_GETOUT2 = new SimpleAttack<HermitPurpleEntity>(
-            0, 0, 2, 1.0f, 0.8f, 24, 0.7f, 1.6f, 0.1f)
-            .withSound(JSoundRegistry.IMPACT_5)
-            .withInfo(
-                    Component.literal("HP_GETOUT2"),
-                    Component.literal("")
-            );
-    public static final SimpleMultiHitAttack<HermitPurpleEntity> GET_OUT = new SimpleMultiHitAttack<HermitPurpleEntity>(
-            360, 7, 1.7f, 0.8f, 24, 0.9f, 1.6f, 0.1f, IntSet.of(2, 3))
-            .withFinisher(5, HP_GETOUT2)
+    public static final SimpleAttack<HermitPurpleEntity> GET_OUT = new SimpleAttack<HermitPurpleEntity>(
+            360,4, 7, 1.7f, 0.8f, 24, 1.1f, 1.6f, 0.0f)
             .withSound(JSoundRegistry.IMPACT_3)
+            .withExtraHitBox(0.8, 0.0f, 1.0f)
+            .withExtraHitBox(-0.1, 0.0f, 0.7f)
             .withInfo(
                     Component.literal("Get Out!"),
                     Component.literal("Hermit Purple does a swipe that knocks enemies away")
