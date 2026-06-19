@@ -2,6 +2,7 @@ package net.arsik.hermitpurple.common.stand;
 
 import it.unimi.dsi.fastutil.ints.IntSet;
 import net.arna.jcraft.api.Attacks;
+import net.arna.jcraft.api.attack.StateContainer;
 import net.arna.jcraft.api.stand.StandData;
 import net.arna.jcraft.api.stand.SummonData;
 import net.arna.jcraft.common.attack.moves.shared.*;
@@ -36,24 +37,24 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
             .summonData(SummonData.of(JSoundRegistry.HAMON_RING))
             .build();
 
-    public static final SimpleAttack<HermitPurpleEntity> VINE_WHIP_FOLLOWUP = new SimpleAttack<HermitPurpleEntity>(
+    public static final SimpleAttack<HermitPurpleEntity> VINE_POKE_FOLLOWUP = new SimpleAttack<HermitPurpleEntity>(
             0, 5,7, 2.2f, 0.9f, 20, 1.0f, 0.1f, 0.1f)
             .withImpactSound(JSoundRegistry.IMPACT_2)
             .withExtraHitBox(-0.65, 0.0f, 1.2f)
             .withExtraHitBox(0.75, 0.0f, 1.1f)
             .withInfo(
-                    Component.literal("Second hit Vine Whip"),
+                    Component.literal("Second hit Vine Poke"),
                     Component.empty()
             ); //todo: make a cris-cross pattern here
-    public static final SimpleAttack<HermitPurpleEntity> VINE_WHIP = new SimpleAttack<HermitPurpleEntity>(
+    public static final SimpleAttack<HermitPurpleEntity> VINE_POKE = new SimpleAttack<HermitPurpleEntity>(
             30, 6, 8, 2.0f, 0.8f, 20, 0.95f, 0.3f, 0.0f)
             .withImpactSound(JSoundRegistry.IMPACT_1)
-            .withFollowup(VINE_WHIP_FOLLOWUP)
+            .withFollowup(VINE_POKE_FOLLOWUP)
             .withExtraHitBox(-0.6, 0.0f, 1.2f)
             .withExtraHitBox(0.7, 0.0f, 1.1f)
             .withInfo(
-                    Component.literal("Vine Whip"),
-                    Component.literal("Semi-quick combo starter/extender, follows up in a cris-cross pattern")
+                    Component.literal("Vine Poke"),
+                    Component.literal("Semi-quick combo starter/extender")
             );
     public static final MainBarrageAttack<HermitPurpleEntity> HAMON_CHARGE = new MainBarrageAttack<HermitPurpleEntity>(280,
             0, 40, 0.75f, 1f, 30, 2f, 0.25f, 0.0f, 3, Blocks.OBSIDIAN.defaultDestroyTime())
@@ -82,9 +83,24 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
                     Component.literal("Hermit Barrage"),
                     Component.literal("Hermit Purple does A 3 Hit Combo, last hit knocks down")
             );
+    public static final KnockdownAttack<HermitPurpleEntity> NOW_I_GOTCHA_HIT = new KnockdownAttack<HermitPurpleEntity>(
+            0, 14, 16, 0.75f, 5f, 5, 2.25f, 0.2f, 0f, 10)
+            .withImpactSound(JSoundRegistry.IMPACT_1)
+            .withLaunch()
+            .withHitSpark(JParticleType.HIT_SPARK_2)
+            .withInfo(
+                    Component.literal("Now I Gotcha (Hit)"),
+                    Component.empty());
+    public static final GrabAttack<HermitPurpleEntity, HermitPurpleEntity.State> NOW_I_GOTCHA = new GrabAttack<>(
+            300, 10, 20, 0.75f, 0f, 16, 2.0f, 0f, 0f, NOW_I_GOTCHA_HIT, StateContainer.of(State.BARRAGE))
+            .withSound(JSoundRegistry.SPTW_GRAB)
+            .withInfo(
+                    Component.literal("Now I Gotcha!"),
+                    Component.literal("Blockable, knocks down after slamming the opponent into the ground"));
     public static final SimpleUppercutAttack<HermitPurpleEntity> UPWARD_LAUNCH = new SimpleUppercutAttack<HermitPurpleEntity>(
             7, 12, 20, 1.75f, 1.2f, 32, 1.5f, 0.3f, 0.0f, 0.4f)
             .withSound(JSoundRegistry.D4C_LIGHT)
+            .withCrouchingVariant(NOW_I_GOTCHA)
             .withImpactSound(JSoundRegistry.IMPACT_1)
             .withHitSpark(JParticleType.HIT_SPARK_3)
             .withExtraHitBox(0.5, 0.0f, 1.2f)
@@ -94,7 +110,7 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
                     Component.literal("Upward Launch"),
                     Component.literal("Hermit Purple launches the enemy upwards and stuns them")
             );
-    public static final KnockdownAttack<HermitPurpleEntity> SLAM = new KnockdownAttack<HermitPurpleEntity>(
+    /*public static final KnockdownAttack<HermitPurpleEntity> SLAM = new KnockdownAttack<HermitPurpleEntity>(
             8, 12, 24, 1.75f, 1.2f, 30, 1.5f, 1.1f, 0.0f, 10)
             .withSound(JSoundRegistry.D4C_LIGHT)
             .withCrouchingVariant(UPWARD_LAUNCH)
@@ -105,7 +121,7 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
             .withInfo(
                     Component.literal("Slam"),
                     Component.literal("Hermit Purple swings its branch downwards")
-            );
+            );*/
     public static final SimpleAttack<HermitPurpleEntity> GET_OUT = new SimpleAttack<HermitPurpleEntity>(
             360,4, 7, 1.7f, 0.8f, 24, 1.1f, 1.6f, 0.0f)
             .withSound(JSoundRegistry.IMPACT_3)
@@ -121,12 +137,12 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
     }
 
     private static void registerMoves(MoveMap<HermitPurpleEntity, State> moves) {
-        var light = moves.register(MoveClass.LIGHT, VINE_WHIP, HermitPurpleEntity.State.LIGHT);
+        var light = moves.register(MoveClass.LIGHT, VINE_POKE, HermitPurpleEntity.State.LIGHT);
         light.withFollowup(State.LIGHT_FOLLOWUP);
 
         moves.register(MoveClass.BARRAGE, HERMIT_BARRAGE, State.BARRAGE);
 
-        moves.register(MoveClass.HEAVY, SLAM, State.BARRAGE);
+        moves.register(MoveClass.HEAVY, UPWARD_LAUNCH, State.BARRAGE);
 
         moves.register(MoveClass.SPECIAL2, GET_OUT, State.BARRAGE);
     } //redo State.whatever after we get animations
