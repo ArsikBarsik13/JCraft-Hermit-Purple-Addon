@@ -2,6 +2,8 @@ package net.arsik.hermitpurple.common.stand;
 
 import it.unimi.dsi.fastutil.ints.IntSet;
 import net.arna.jcraft.api.Attacks;
+import net.arna.jcraft.api.stand.StandData;
+import net.arna.jcraft.api.stand.SummonData;
 import net.arna.jcraft.common.attack.moves.shared.*;
 import net.arna.jcraft.common.util.JParticleType;
 import net.arsik.hermitpurple.common.register.StandTypeRegistry;
@@ -13,7 +15,6 @@ import net.arna.jcraft.api.attack.MoveSet;
 import net.arna.jcraft.api.attack.MoveSetManager;
 import net.arna.jcraft.api.attack.enums.MoveClass;
 import net.arna.jcraft.api.registry.JSoundRegistry;
-import net.arna.jcraft.api.stand.StandData;
 import net.arna.jcraft.api.stand.StandEntity;
 import net.arna.jcraft.api.stand.StandInfo;
 import net.arna.jcraft.common.util.StandAnimationState;
@@ -26,17 +27,24 @@ import org.jetbrains.annotations.NotNull;
 public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPurpleEntity.State> {
     public static final MoveSet<HermitPurpleEntity, State> MOVE_SET = MoveSetManager.create(StandTypeRegistry.HERMIT_PURPLE,
             HermitPurpleEntity::registerMoves, State.class);
-    public static final StandData DATA = StandData.of(StandInfo.of(Component.literal("Hermit Purple")));
+    public static final StandData DATA = StandData.builder()
+            .info(StandInfo.builder()
+                    .name(Component.literal("Hermit Purple"))
+                    .proCount(3)
+                    .conCount(2)
+                    .build())
+            .summonData(SummonData.of(JSoundRegistry.HAMON_ECHO))
+            .build();
 
     public static final SimpleAttack<HermitPurpleEntity> VINE_WHIP_FOLLOWUP = new SimpleAttack<HermitPurpleEntity>(
-            0, 2,3 , 2.2f, 0.9f, 3, 1.0f, 0.1f, 0.1f)
-            .withImpactSound(JSoundRegistry.IMPACT_3)
+            0, 5,7, 2.2f, 0.9f, 3, 1.0f, 0.1f, 0.1f)
+            .withImpactSound(JSoundRegistry.IMPACT_2)
             .withInfo(
                     Component.literal("Second hit Vine Whip"),
                     Component.empty()
             );
     public static final SimpleAttack<HermitPurpleEntity> VINE_WHIP = new SimpleAttack<HermitPurpleEntity>(
-            0, 1, 4, 2.0f, 0.8f, 4, 0.95f, 0.3f, 0.1f)
+            2, 6, 8, 2.0f, 0.8f, 4, 0.95f, 0.3f, 0.1f)
             .withImpactSound(JSoundRegistry.IMPACT_1)
             .withFollowup(VINE_WHIP_FOLLOWUP)
             .withInfo(
@@ -47,13 +55,12 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
             0, 40, 0.75f, 1f, 30, 2f, 0.25f, 0f, 3, Blocks.OBSIDIAN.defaultDestroyTime())
             .withSound(JSoundRegistry.HAMON_SURGE)
             .withInfo(
-                    Component.translatable("move.jcraft.hamon.default.empower_move.name"),
-                    Component.translatable("move.jcraft.hamon.default.empower_move.description")
-            );
-    //is a SP barrage atm
+                    Component.literal("§eHamon Empower (HAMON SPEC-ONLY)§f"),
+                    Component.literal("§eEmpower your attacks with Hamon energy§f")
+            ); //is an SP barrage atm
     public static final KnockdownAttack<HermitPurpleEntity> HP_KNOCKDOWN = new KnockdownAttack<HermitPurpleEntity>(
-            0, 4, 6, 1.35f, 1.1f, 16, 1.3f, 0.4f, 0, 7)
-            .withImpactSound(JSoundRegistry.HAMON_CRACKLE_IMPACT)
+            0, 4, 6, 1.35f, 1.1f, 16, 1.3f, 0.4f, 0, 6)
+            .withImpactSound(JSoundRegistry.HAMON_CRASH)
             .withHitSpark(JParticleType.HIT_SPARK_1)
             .withLaunch()
             .withInfo(
@@ -70,7 +77,7 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
                     Component.literal("Hermit Purple does A 3 Hit Combo, last hit knocks down")
             );
     public static final SimpleUppercutAttack<HermitPurpleEntity> UPWARD_LAUNCH = new SimpleUppercutAttack<HermitPurpleEntity>(
-            7, 12, 20, 1.75f, 1.2f, 15, 1.5f, 1.1f, 0.1f, 0.7f)
+            7, 12, 20, 1.75f, 1.2f, 15, 1.5f, 1.1f, 0.1f, 0.2f)
             .withSound(JSoundRegistry.D4C_LIGHT)
             .withImpactSound(JSoundRegistry.IMPACT_1)
             .withHitSpark(JParticleType.HIT_SPARK_3)
@@ -103,6 +110,11 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
         moves.register(MoveClass.HEAVY, SLAM, State.BARRAGE);
     }
 
+    @Override
+    public boolean initMove(final MoveClass moveClass) {
+        if (tryFollowUp(moveClass, MoveClass.LIGHT)) return true;
+        return super.initMove(moveClass);
+    }
     @NotNull
     @Override
     public HermitPurpleEntity getThis() {
