@@ -29,14 +29,14 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
     public static final StandData DATA = StandData.of(StandInfo.of(Component.literal("Hermit Purple")));
 
     public static final SimpleAttack<HermitPurpleEntity> VINE_WHIP_FOLLOWUP = new SimpleAttack<HermitPurpleEntity>(
-            0, 4,2 , 2.2f, 0.6f, 3, 0.8f, 0.1f, 0.2f)
+            0, 2,3 , 2.2f, 0.9f, 3, 1.0f, 0.1f, 0.1f)
             .withImpactSound(JSoundRegistry.IMPACT_3)
             .withInfo(
                     Component.literal("Second hit Vine Whip"),
                     Component.empty()
             );
     public static final SimpleAttack<HermitPurpleEntity> VINE_WHIP = new SimpleAttack<HermitPurpleEntity>(
-            40, 1, 2, 2.0f, 0.5f, 3, 0.8f, 0.2f, 0.0f)
+            0, 1, 4, 2.0f, 0.8f, 4, 0.95f, 0.3f, 0.1f)
             .withImpactSound(JSoundRegistry.IMPACT_1)
             .withFollowup(VINE_WHIP_FOLLOWUP)
             .withInfo(
@@ -50,9 +50,10 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
                     Component.translatable("move.jcraft.hamon.default.empower_move.name"),
                     Component.translatable("move.jcraft.hamon.default.empower_move.description")
             );
+    //is a SP barrage atm
     public static final KnockdownAttack<HermitPurpleEntity> HP_KNOCKDOWN = new KnockdownAttack<HermitPurpleEntity>(
-            0, 2, 4, 1.15f, 0.8f, 16, 1.3f, 0.4f, 0, 10)
-            .withImpactSound(JSoundRegistry.TW_KICK_HIT)
+            0, 4, 6, 1.35f, 1.1f, 16, 1.3f, 0.4f, 0, 7)
+            .withImpactSound(JSoundRegistry.HAMON_CRACKLE_IMPACT)
             .withHitSpark(JParticleType.HIT_SPARK_1)
             .withLaunch()
             .withInfo(
@@ -60,8 +61,8 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
                     Component.empty()
             );
     public static final SimpleMultiHitAttack<HermitPurpleEntity> HERMIT_BARRAGE = new SimpleMultiHitAttack<HermitPurpleEntity>(
-            0, 25, 1.10f, 0.6f, 7, 1.1f, 0.35f, 0.2f, IntSet.of(1, 1))
-            .withFinisher(18, HP_KNOCKDOWN)
+            0, 26, 1.40f, 0.9f, 7, 1.1f, 0.3f, 0.2f, IntSet.of(6, 14))
+            .withFinisher(20, HP_KNOCKDOWN)
             .withCrouchingVariant(HAMON_CHARGE)
             .withSound(JSoundRegistry.HAMON_ECHO)
             .withInfo(
@@ -69,7 +70,7 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
                     Component.literal("Hermit Purple does A 3 Hit Combo, last hit knocks down")
             );
     public static final SimpleUppercutAttack<HermitPurpleEntity> UPWARD_LAUNCH = new SimpleUppercutAttack<HermitPurpleEntity>(
-            7, 10, 20, 1.75f, 0.7f, 15, 1.5f, 1.1f, 0.3f, 35)
+            7, 12, 20, 1.75f, 1.2f, 15, 1.5f, 1.1f, 0.1f, 0.7f)
             .withSound(JSoundRegistry.D4C_LIGHT)
             .withImpactSound(JSoundRegistry.IMPACT_1)
             .withHitSpark(JParticleType.HIT_SPARK_3)
@@ -79,7 +80,7 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
                     Component.literal("Hermit Purple launches the enemy upwards and stuns them")
             );
     public static final KnockdownAttack<HermitPurpleEntity> SLAM = new KnockdownAttack<HermitPurpleEntity>(
-            8, 10, 24, 1.75f, 0.7f, 12, 1.5f, 1.1f, 0.1f, 1)
+            8, 12, 24, 1.75f, 1.2f, 12, 1.5f, 1.1f, 0.1f, 5)
             .withSound(JSoundRegistry.D4C_LIGHT)
             .withCrouchingVariant(UPWARD_LAUNCH)
             .withImpactSound(JSoundRegistry.IMPACT_1)
@@ -121,7 +122,7 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
     public enum State implements StandAnimationState<HermitPurpleEntity> {
         IDLE(AzCommand.create(HermitPurple.BASE_CONTROLLER, "idle", AzPlayBehaviors.LOOP)),
         LIGHT(AzCommand.create(HermitPurple.BASE_CONTROLLER, "hermit_purple.light", AzPlayBehaviors.HOLD_ON_LAST_FRAME)),
-        LIGHT_FOLLOWUP(Attacks.createAnimationCommand(JCraft.BASE_CONTROLLER, "", AzPlayBehaviors.HOLD_ON_LAST_FRAME)),
+        LIGHT_FOLLOWUP(Attacks.createAnimationCommand(JCraft.BASE_CONTROLLER, "hermit_purple.light_followup", AzPlayBehaviors.HOLD_ON_LAST_FRAME)),
         BLOCK(AzCommand.create(HermitPurple.BASE_CONTROLLER, "block", AzPlayBehaviors.LOOP)),
         BARRAGE(AzCommand.create(HermitPurple.BASE_CONTROLLER, "barrage", AzPlayBehaviors.LOOP));
 
