@@ -7,6 +7,7 @@ import net.arna.jcraft.api.stand.StandData;
 import net.arna.jcraft.api.stand.SummonData;
 import net.arna.jcraft.common.attack.moves.shared.*;
 import net.arna.jcraft.common.util.JParticleType;
+import net.arsik.hermitpurple.common.register.HPSoundRegistry;
 import net.arsik.hermitpurple.common.register.StandTypeRegistry;
 import mod.azure.azurelib.animation.dispatch.command.AzCommand;
 import mod.azure.azurelib.animation.play_behavior.AzPlayBehaviors;
@@ -34,7 +35,7 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
                     .proCount(3)
                     .conCount(2)
                     .build())
-            .summonData(SummonData.of(JSoundRegistry.HAMON_RING))
+            .summonData(SummonData.of(HPSoundRegistry.HP_SUMMON))
             .build();
 
     public static final SimpleAttack<HermitPurpleEntity> VINE_POKE_FOLLOWUP = new SimpleAttack<HermitPurpleEntity>(
@@ -45,7 +46,7 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
             .withInfo(
                     Component.literal("Second hit Vine Poke"),
                     Component.empty()
-            ); //todo: make a cris-cross pattern here
+            );
     public static final SimpleAttack<HermitPurpleEntity> VINE_POKE = new SimpleAttack<HermitPurpleEntity>(
             30, 6, 8, 2.0f, 0.8f, 20, 0.95f, 0.3f, 0.0f)
             .withImpactSound(JSoundRegistry.IMPACT_1)
