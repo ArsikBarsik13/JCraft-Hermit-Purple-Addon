@@ -111,26 +111,14 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
                     Component.literal("Upward Launch"),
                     Component.literal("Hermit Purple launches the enemy upwards and stuns them")
             );
-    /*public static final KnockdownAttack<HermitPurpleEntity> SLAM = new KnockdownAttack<HermitPurpleEntity>(
-            8, 12, 24, 1.75f, 1.2f, 30, 1.5f, 1.1f, 0.0f, 10)
-            .withSound(JSoundRegistry.D4C_LIGHT)
-            .withCrouchingVariant(UPWARD_LAUNCH)
-            .withImpactSound(JSoundRegistry.IMPACT_1)
-            .withHitSpark(JParticleType.HIT_SPARK_3)
-            .withExtraHitBox(0.5, 0.0f, 1.2f)
-            .withExtraHitBox(-0.4, 0.0f, 0.9f)
-            .withInfo(
-                    Component.literal("Slam"),
-                    Component.literal("Hermit Purple swings its branch downwards")
-            );*/
-    public static final SimpleAttack<HermitPurpleEntity> GET_OUT = new SimpleAttack<HermitPurpleEntity>(
-            360,4, 7, 1.7f, 0.8f, 24, 1.1f, 1.6f, 0.0f)
+    public static final KnockdownAttack<HermitPurpleEntity> WATCH_YOUR_LEGS = new KnockdownAttack<HermitPurpleEntity>(
+            360,2, 10, 1.5f, 2f, 24, 1.1f, 1.6f, 1f, 20)
             .withSound(JSoundRegistry.IMPACT_3)
-            .withExtraHitBox(0.8, 0.0f, 1.0f)
-            .withExtraHitBox(-0.1, 0.0f, 0.7f)
+            .withExtraHitBox(1.5, 1.1f, 1.1f)
+            .withExtraHitBox(1.5, -1.1f, 1.1f)
             .withInfo(
-                    Component.literal("Get Out!"),
-                    Component.literal("Hermit Purple does a swipe that knocks enemies away")
+                    Component.literal("Watch your legs!"),
+                    Component.literal("Hermit Purple does a swipe that knocks enemies down for 1 second")
             );
 
     public HermitPurpleEntity(Level world) {
@@ -145,7 +133,7 @@ public class HermitPurpleEntity extends StandEntity<HermitPurpleEntity, HermitPu
 
         moves.register(MoveClass.HEAVY, UPWARD_LAUNCH, State.BARRAGE);
 
-        moves.register(MoveClass.SPECIAL2, GET_OUT, State.BARRAGE);
+        moves.register(MoveClass.SPECIAL2, WATCH_YOUR_LEGS, State.BARRAGE);
     } //redo State.whatever after we get animations
 
     @Override

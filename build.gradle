@@ -100,6 +100,8 @@ subprojects {
     dependencies {
         minecraft "net.minecraft:minecraft:$rootProject.minecraft_version"
         mappings loom.officialMojangMappings()
+
+        annotationProcessor 'org.projectlombok:lombok:1.18.32'
     }
 
     java {
